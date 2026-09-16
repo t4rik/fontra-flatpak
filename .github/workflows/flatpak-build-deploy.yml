@@ -156,7 +156,7 @@ jobs:
         with:
           manifest-path: ${{ env.APP_ID }}.yml
           bundle: ${{ env.APP_ID }}.flatpak
-          branch: ${{ github.ref_name }}
+          branch: ${{ replace(github.ref_name, '/', '-') }}
           gpg-sign: ${{ steps.import_gpg.outputs.keyid }}
           upload-artifact: true
           cache-key: flatpak-builder-${{ github.sha }}
