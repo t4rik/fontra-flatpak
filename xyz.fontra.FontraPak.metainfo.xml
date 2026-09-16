@@ -34,6 +34,31 @@
   </categories>
   <launchable type="desktop-id">xyz.fontra.FontraPak.desktop</launchable>
   <releases>
+    <release version="2026.9.0" date="2026-09-14">
+      <description>
+        <p>New features</p>
+        <ul>
+          <li>[text entry panel] Add fields to set the text size and line height. Add new "Text layout options" accordion section for text alignment, text size and line height. \1, \1, \1</li>
+          <li>[command line] The `fontra` command line tool got a new subcommand `new`, for creating a new font. \1, \1</li>
+        </ul>
+        <p>Fixes</p>
+        <ul>
+          <li>[glyph editor] Fix behavior when moving a window between screens with different resolutions. \1</li>
+          <li>[fontra-pak linux] Fix window appearance and behavior on GNOME Wayland. \1</li>
+          <li>[opentype features panel] Recompile when glyphs are being added to or deleted from the font. \1</li>
+          <li>[firefox] Work around text selection problem within draggable boxes. \1</li>
+          <li>[glyph editor] Fix text align change when in auto-view-box mode. \1</li>
+          <li>[woff/woff2] Fix shaping and OpenType features for woff/woff2 fonts. \1</li>
+          <li>Remove confusing kerning visualization when "Apply text shaping and features" is off. \1</li>
+          <li>Refuse to edit kerning when it can't or won't be shown. \1, \1</li>
+        </ul>
+        <p>Improvements</p>
+        <ul>
+          <li>[font info] Make sure various font info can't be edited when in read-only mode. \1</li>
+          <li>[shaping debugger] Make showing kerning as part of the advance width field opt-out. \1, \1</li>
+        </ul>
+      </description>
+    </release>
     <release version="2026.8.0" date="2026-09-07">
       <description>
         <p>New features</p>
