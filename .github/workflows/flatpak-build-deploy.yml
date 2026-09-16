@@ -1,11 +1,12 @@
 name: Flatpak Build and Deploy
 
 on:
-  # push:
-  #   branches:
-  #     - main
-  # pull_request:
-  workflow_dispatch:  # allow manual trigger
+  push:
+    branches:
+      - main
+      - feat/metadata-docs
+  pull_request:
+  workflow_dispatch:
   repository_dispatch:
     types: [release-event]
 
