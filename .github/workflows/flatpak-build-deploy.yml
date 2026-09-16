@@ -152,11 +152,15 @@ jobs:
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
           trust_level: 5
 
+      - name: Sanitize OSTree branch name
+        run: |
+          echo "OSTREE_BRANCH=$(echo "${{ github.ref_name }}" | tr '/' '-')" >> $GITHUB_ENV
+
       - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
         with:
           manifest-path: ${{ env.APP_ID }}.yml
           bundle: ${{ env.APP_ID }}.flatpak
-          branch: ${{ replace(github.ref_name, '/', '-') }}
+          branch: ${{ env.OSTREE_BRANCH }}
           gpg-sign: ${{ steps.import_gpg.outputs.keyid }}
           upload-artifact: true
           cache-key: flatpak-builder-${{ github.sha }}
