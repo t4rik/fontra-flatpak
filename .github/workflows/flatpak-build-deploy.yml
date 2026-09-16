@@ -55,10 +55,8 @@ jobs:
           export VERSION_CLEAN=$(echo "$VERSION" | sed 's/^v//')
           export RELEASE_DATE="${{ steps.latest-release.outputs.release_date }}"
 
-          # Fetch raw body
           RAW_BODY=$(curl -s https://api.github.com/repos/fontra/fontra-pak/releases/latest | jq -r '.body')
 
-          # Format Markdown to simple XML description tags
           export FORMATTED_NOTES=$(echo "$RAW_BODY" | awk '
             BEGIN { in_list = 0 }
             /^(###?|[A-Za-z]+:?)/ {
@@ -94,12 +92,10 @@ jobs:
           root = tree.getroot()
           releases = root.find("releases")
 
-          # Remove existing release entry with matching version to prevent duplicates
           for r in list(releases.findall("release")):
               if r.get("version") == version:
                   releases.remove(r)
 
-          # Build new release element
           new_release = ET.Element("release", {"version": version, "date": date})
           desc = ET.Element("description")
 
@@ -141,20 +137,20 @@ jobs:
       contents: read
       packages: read
     steps:
-        - uses: actions/checkout@v7
-          with:
-            ref: ${{ github.ref_name }}
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.ref_name }}
 
-        - name: Import GPG key
-          if: ${{ secrets.GPG_PRIVATE_KEY != '' }}
-          id: import_gpg
-          uses: crazy-max/ghaction-import-gpg@v7
-          with:
-            gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-            passphrase: ${{ secrets.GPG_PASSPHRASE }}
-            trust_level: 5
+      - name: Import GPG key
+        if: ${{ secrets.GPG_PRIVATE_KEY != '' }}
+        id: import_gpg
+        uses: crazy-max/ghaction-import-gpg@v7
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          trust_level: 5
 
-        - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+      - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
         with:
           manifest-path: ${{ env.APP_ID }}.yml
           bundle: ${{ env.APP_ID }}.flatpak
