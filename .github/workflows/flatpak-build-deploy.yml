@@ -141,6 +141,8 @@ jobs:
       packages: read
     steps:
       - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.ref_name }}
 
       - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
         with:
