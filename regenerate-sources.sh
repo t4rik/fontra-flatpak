@@ -29,7 +29,11 @@ python3 "$FBT/pip/flatpak-pip-generator.py" --output "$OUT/python3-deps" --yaml 
 # (fix-lockfile.py is shipped next to this script), then generate from the patched lock.
 python3 "$OUT/fix-lockfile.py" fontra/package-lock.json "$OUT/package-lock-fontra.json"
 (cd fontra && cp "$OUT/package-lock-fontra.json" package-lock.json && flatpak-node-generator npm package-lock.json -o "$OUT/node-sources-fontra.json" && git checkout package-lock.json)
-(cd fontra-rcjk && flatpak-node-generator npm package-lock.json -o "$OUT/node-sources-rcjk.json")
+# fontra-rcjk's lockfile can lag behind its fontra submodule: re-lock against the submodule, then fill in resolved/integrity.
+(cd fontra-rcjk && npm install --package-lock-only --ignore-scripts --no-audit --no-fund \
+  && python3 "$OUT/fix-lockfile.py" package-lock.json "$OUT/package-lock-rcjk.json" \
+  && cp "$OUT/package-lock-rcjk.json" package-lock.json \
+  && flatpak-node-generator npm package-lock.json -o "$OUT/node-sources-rcjk.json" && git checkout package-lock.json)
 
 # Cargo.lock files come from the maturin and watchfiles sdists named in the manifest.
 python3 "$FBT/cargo/flatpak-cargo-generator.py" maturin-1.15.0/Cargo.lock -o "$OUT/cargo-sources-maturin.json"

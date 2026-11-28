@@ -208,11 +208,17 @@ modules:
         npm_config_cache: /run/build/fontra-rcjk/flatpak-node/npm-cache
         npm_config_offline: 'true'
     build-commands:
+      # Upstream's lockfile is out of sync with the fontra submodule (harfbuzzjs ^1.6.2,
+      # mocha ^12.0.2) and lacks resolved/integrity for some packages, so npm would try
+      # to reach the registry. package-lock-rcjk.json is regenerated against the submodule.
+      - cp package-lock-rcjk.json package-lock.json
       - pip3 install --verbose --no-index --no-deps --no-build-isolation --prefix=${FLATPAK_DEST} .
     sources:
       - type: git
         url: https://github.com/fontra/fontra-rcjk.git
         commit: 9078afe71a24c2b549c04517d1b8671cbc38562d
+      - type: file
+        path: package-lock-rcjk.json
       - node-sources-rcjk.json
 
   - name: fontrapak
